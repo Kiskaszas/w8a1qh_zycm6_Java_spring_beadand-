@@ -1,5 +1,6 @@
 package org.example.kaszmaginnovate.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,6 @@ public class Meccs implements Serializable {
 
     // Egy meccsre több belépés is tartozhat, így One-to-Many kapcsolat van
     @OneToMany(mappedBy = "meccs", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Belepes> belepesek = new ArrayList<>();
 }

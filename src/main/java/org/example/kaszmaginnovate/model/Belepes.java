@@ -1,5 +1,6 @@
 package org.example.kaszmaginnovate.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,10 +16,12 @@ public class Belepes {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nezoid", nullable = false)
+    @JsonBackReference
     private Nezo nezo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meccsid", nullable = false)
+    @JsonBackReference
     private Meccs meccs;
 
     @Column(nullable = false)

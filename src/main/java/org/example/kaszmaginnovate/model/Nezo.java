@@ -1,5 +1,6 @@
 package org.example.kaszmaginnovate.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,6 @@ public class Nezo implements Serializable {
 
     // Egy néző több belépést is létrehozhat, így One-to-Many kapcsolat van
     @OneToMany(mappedBy = "nezo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Belepes> belepesek = new ArrayList<>();
 }
