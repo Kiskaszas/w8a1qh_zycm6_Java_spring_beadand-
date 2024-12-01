@@ -22,8 +22,9 @@ public class NezoController {
     }
 
     @GetMapping
-    public Optional<List<Nezo>> getAllNezo() {
-        return nezoService.findAll();
+    public ResponseEntity<List<Nezo>> getAllNezo() {
+        List<Nezo> nezoList = nezoService.findAll().orElseThrow(() -> new RuntimeException("No viewers found."));
+        return ResponseEntity.ok(nezoList);
     }
 
     @GetMapping("/{id}")
@@ -34,11 +35,19 @@ public class NezoController {
     }
 
     @PostMapping
-    public ResponseEntity<Optional<Nezo>> createNezo(@RequestBody Nezo nezo) {
+    public ResponseEntity<String> createNezo(@RequestBody Nezo nezo) {
         if (!auth.isAdmin()) {
             return ResponseEntity.status(403).build(); // Forbidden
         }
-        return ResponseEntity.ok(nezoService.save(nezo));
+
+        boolean exists = nezoService.existsByNev(nezo.getNev());
+        if (exists) {
+            return ResponseEntity.badRequest().body("A néző már létezik az adatbázisban.");
+        }
+
+        // Mentés, ha nem létezik
+        Nezo savedNezo = nezoService.save(nezo).get();
+        return ResponseEntity.ok("Sikeressen hozzáadtad a nézőt");
     }
 
     @PutMapping("/{id}")

@@ -127,10 +127,9 @@ public class HomeController {
 
         Message message = new Message();
 
-        // Ha a felhasználó be van jelentkezve, a principal tartalmazza a felhasználónevet
         if (principal != null) {
             message.setSender(principal.getName());
-            message.setRole("USER"); // Feltételezve, hogy minden bejelentkezett felhasználó "USER"
+            message.setRole("USER");
         } else {
             message.setSender(sender);
             message.setRole("LÁTOGATÓ");
