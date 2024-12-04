@@ -6,7 +6,7 @@ document.getElementById('searchInput').addEventListener('input', function() {
         row.style.display = text.includes(filter) ? '' : 'none';
     });
 });
-//uj meccs felvétele
+
 // Új meccs létrehozása
 $('#newModalForm').on('submit', function(e) {
     e.preventDefault();
@@ -33,26 +33,7 @@ $('#newModalForm').on('submit', function(e) {
         }
     });
 });
-/*jQuery.ajax({
-    url: '/football/meccs/',
-    type: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({
-        datum: $('#new_datum').val(),
-        kezdes: $('#new_kezdes').val(),
-        belepo: $('#new_belepo').val(),
-        tipus: $('#new_tipus').val()
-    }),
-    success: function(response) {
-        showNotification("Meccs sikeresen létrehozva!");
-        window.location.href = "/meccsek"; // Frissítés az új adatok betöltéséhez
-    },
-    error: function(xhr, status, error) {
-        showNotification("Hiba történt a létrehozás során: " + error, true);
-        console.error(xhr.responseText);
-    }
-});*/
-// Meccs Modal form adat kitöltése
+
 document.getElementById('updateModal').addEventListener('show.bs.modal', function (event) {
     var button = event.relatedTarget; // A modal-t megnyitó gomb
     var matchId = button.getAttribute('data-id'); // A gomb adat-id attribútuma, amely tartalmazza a meccs ID-t
@@ -61,7 +42,6 @@ document.getElementById('updateModal').addEventListener('show.bs.modal', functio
         url: '/football/meccs/' + matchId,
         type: 'GET',
         success: function(response) {
-            // Töltsük fel a modal mezőit a válaszból kapott adatokkal
             $('#updateMeccsId').val(response.id);
             $('#datum').val(response.datum);
             $('#kezdes').val(response.kezdes);
@@ -79,7 +59,6 @@ document.getElementById('updateModal').addEventListener('show.bs.modal', functio
     var modal = this;
     modal.querySelector('#updateMeccsId').value = id;
 
-    // AJAX kérés a módosításhoz
     jQuery('#updateModalForm').on('submit', function (e) {
         e.preventDefault();
 

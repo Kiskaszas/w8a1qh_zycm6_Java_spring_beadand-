@@ -46,15 +46,14 @@ public class NezoController {
             return ResponseEntity.badRequest().body("A néző már létezik az adatbázisban.");
         }
 
-        // Mentés, ha nem létezik
-        Nezo savedNezo = nezoService.save(nezo).get();
+        nezoService.save(nezo);
         return ResponseEntity.ok("Sikeressen hozzáadtad a nézőt");
     }
 
     @PutMapping("/football/nezo/{id}")
     public ResponseEntity<NezoResponse> updateNezo(@PathVariable Long id, @RequestBody Nezo nezo) {
         if (!auth.isAdmin()) {
-            return ResponseEntity.status(403).build(); // Forbidden
+            return ResponseEntity.status(403).build();
         }
         NezoResponse nezoResponse = nezoService.update(id, nezo);
         return ResponseUtil.toResponseEntity(Optional.ofNullable(nezoResponse));

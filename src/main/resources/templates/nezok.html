@@ -37,6 +37,10 @@
 <main class="container mt-4">
   <!-- Szűrő beviteli mező -->
   <div class="mb-3">
+    <div sec:authorize="hasRole('ADMIN')">
+      <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#newModal" th:data-id="${nezo.id}">+ Új néző</button>
+    </div>
+    <label for="searchInput"></label>
     <input type="text" id="searchInput" class="form-control" placeholder="Nézők keresése...">
   </div>
 
@@ -45,8 +49,8 @@
     <thead>
     <tr>
       <th>Név</th>
-      <th>Email</th>
-      <th>Telefonszám</th>
+      <th>Férfi</th>
+      <th>Bérletes</th>
       <th sec:authorize="hasRole('ADMIN')"></th>
       <th sec:authorize="hasRole('ADMIN')"></th>
       <th sec:authorize="hasRole('ADMIN')">Műveletek</th>
@@ -63,7 +67,7 @@
       <td sec:authorize="hasRole('ADMIN')"></td>
       <td sec:authorize="hasRole('ADMIN')" th:colspan="2">
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal" th:data-id="${nezo.id}">Módosítás</button>
-        <button class="btn btn-danger btn-sm" id="deleteOptionBtn" data-bs-toggle="modal" data-bs-target="#deleteModal" th:data-id="${nezo.id}">Törlés</button>
+        <button class="btn btn-danger btn-sm" id="deleteNezoBtn" data-bs-toggle="modal" data-bs-target="#deleteModal" th:data-id="${nezo.id}">Törlés</button>
       </td>
     </tr>
     </tbody>
@@ -83,7 +87,43 @@
     </ul>
   </nav>
 </main>
+<!--Új Modal-->
+<div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newModalLabel">Néző létrehozása</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="newModalForm" method="post">
+          <!-- Név mező -->
+          <div class="mb-3">
+            <label class="form-label">Név:</label>
+            <input type="text" class="form-control" name="nev" id="newNezoNev" required>
+          </div>
 
+          <!-- Férfi mező -->
+          <div class="mb-3">
+            <label class="form-label">Férfi: </label>
+            <input type="checkbox" id="newferfi" name="newferfi" th:checked="${ferfi}" />
+          </div>
+
+          <!-- Bérletes mező -->
+          <div class="mb-3">
+            <label for="berletes" class="form-label">Bérletes: </label>
+            <input type="checkbox" id="newberletes" name="berletes" th:checked="${berletes} ? 'true' : 'false'">
+          </div>
+
+          <button type="submit" class="btn btn-success" id="newBtn">Létrehozás</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Módosítás Modal-->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -137,9 +177,9 @@
         <p>Biztosan törölni szeretné a néző adatait?</p>
       </div>
       <div class="modal-footer">
-        <form id="deleteModalForm" th:action="@{/football/nezo/{deleteNezoId}(deleteNezoId=${deleteNezoId})}" method="post">
-          <input type="hidden" name="_method" value="delete"/>
-          <input type="hidden" id="deleteNezoId" name="id" th:value="${nezo.id}">
+        <form id="deleteModalForm" th:action="@{/nezo/delete/{id}(id=${nezo.id})}" method="post">
+          <input type="hidden" name="_method" value="DELETE"/>
+          <input type="hidden" id="deleteNezoId" name="id">
           <button type="submit" class="btn btn-danger">Igen</button>
         </form>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nem</button>
