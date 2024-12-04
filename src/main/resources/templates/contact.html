@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="hu" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns="http://www.w3.org/1999/html">
 <header>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,20 +35,22 @@
 <body>
 <h2>Kapcsolati űrlap</h2>
 <div class="container mb-3">
-    <form th:action="@{/contact/send-message}" method="post">
+    <form id="contactForm">
         <div class="form-group">
             <label for="sender">Név:</label>
-            <input type="text" id="sender" name="sender" placeholder="Írja be a nevét" sec:authorize="isAnonymous()" required>
-            <p sec:authorize="isAuthenticated()" sec:authentication="name"></p>
+            <input type="text" id="sender" name="sender" placeholder="Írja be a nevét" th:value="${message.sender}" readonly required>
         </div>
         <div class="form-group">
             <label for="content">Üzenet:</label>
             <textarea id="content" name="content" placeholder="Írja be üzenetét" required></textarea>
         </div>
         <div class="form-group">
-            <button type="submit">Üzenet küldése</button>
+            <button type="submit" class="btn btn-primary">Üzenet küldése</button>
         </div>
     </form>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script th:src="@{/js/contact.js}"></script>
+<script th:src="@{/js/main.ja}"></script>
 </body>
 </html>

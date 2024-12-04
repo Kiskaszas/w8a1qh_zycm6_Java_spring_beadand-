@@ -11,10 +11,13 @@ import org.example.kaszmaginnovate.service.MessageService;
 import org.example.kaszmaginnovate.service.NezoService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -113,30 +116,28 @@ public class HomeController {
     }
 
    @GetMapping("/contact")
-   public String contact() {
+   public String contact(Model model, Principal principal) {
+        Message message = new Message();
+        message.setSender(principal.getName());
+        model.addAttribute("message", message);
         return "contact";
    }
 
-    @PostMapping("/contact/send-message")
+    @PostMapping(value = "/contact/send-message", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String postContact(
-            @RequestParam String sender,
-            @RequestParam String content,
+            @RequestBody Message message,
             Principal principal) {
-
-        Message message = new Message();
 
         if (principal != null) {
             message.setSender(principal.getName());
             message.setRole("USER");
         } else {
-            message.setSender(sender);
             message.setRole("LÁTOGATÓ");
         }
 
-        message.setContent(content);
         message.setSentAt(LocalDateTime.now());
-
         messageService.save(message);
-        return "redirect:/";
+
+        return "redirect:/contact";
     }
 }
