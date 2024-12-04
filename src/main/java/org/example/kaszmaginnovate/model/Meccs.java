@@ -1,6 +1,8 @@
 package org.example.kaszmaginnovate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Data
@@ -17,22 +18,26 @@ import java.util.Objects;
 public class Meccs implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty
     private Long id;
 
     @Column(nullable = false)
+    @JsonProperty
     private String datum;
 
     @Column(nullable = false)
+    @JsonProperty
     private String kezdes;
 
     @Column(nullable = false)
+    @JsonProperty
     private int belepo;
 
     @Column(nullable = false)
+    @JsonProperty
     private String tipus;
 
-    // Egy meccsre több belépés is tartozhat, így One-to-Many kapcsolat van
-    @OneToMany(mappedBy = "meccs", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "meccs", orphanRemoval = true)
+    @JsonIgnore
     private List<Belepes> belepesek = new ArrayList<>();
 }

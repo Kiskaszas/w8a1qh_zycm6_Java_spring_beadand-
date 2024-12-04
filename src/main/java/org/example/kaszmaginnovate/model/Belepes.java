@@ -16,12 +16,12 @@ public class Belepes {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nezoid", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("nezo-belepesek")
     private Nezo nezo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meccsid", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("meccs-belepesek")
     private Meccs meccs;
 
     @Column(nullable = false)

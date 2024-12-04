@@ -1,10 +1,9 @@
 package org.example.kaszmaginnovate.service;
 
+import org.example.kaszmaginnovate.controller.response.NezoResponse;
 import org.example.kaszmaginnovate.model.Nezo;
 import org.example.kaszmaginnovate.repository.NezoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -36,16 +35,26 @@ public class NezoServiceImpl implements NezoService {
     }
 
     @Override
-    public Optional<Nezo> update(Long id, Nezo nezoDetails) {
+    public NezoResponse update(Long id, Nezo nezoDetails) {
         Optional<Nezo> nezoOpcional = findById(id);
         Nezo nezo = nezoOpcional.orElse(null);
         if (nezo != null) {
+            nezo.setId(id);
             nezo.setNev(nezoDetails.getNev());
             nezo.setFerfi(nezoDetails.isFerfi());
             nezo.setBerletes(nezoDetails.isBerletes());
-            return Optional.of(nezoRepository.save(nezo));
+            var updatedNezo = Optional.of(nezoRepository.save(nezo)).get();
+            return new NezoResponse(
+                    true,
+                    "Sikeres Felhasznáó frissítés",
+                    null,
+                    updatedNezo);
         }
-        return Optional.empty();
+        return new NezoResponse(
+                false,
+                "Sikertelen felhasználó frissírés",
+                List.of("404 A felhasználó nem található"),
+                null);
     }
 
     @Override

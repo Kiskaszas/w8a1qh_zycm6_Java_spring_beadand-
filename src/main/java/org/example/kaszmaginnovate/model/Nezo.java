@@ -1,9 +1,11 @@
 package org.example.kaszmaginnovate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +30,7 @@ public class Nezo implements Serializable {
     @Convert(converter = BooleanConverter.class)
     private boolean berletes;
 
-    // Egy néző több belépést is létrehozhat, így One-to-Many kapcsolat van
     @OneToMany(mappedBy = "nezo", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Belepes> belepesek = new ArrayList<>();
 }

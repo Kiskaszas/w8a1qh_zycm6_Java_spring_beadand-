@@ -1,10 +1,7 @@
-package org.example.kaszmaginnovate.controller;
+package org.example.kaszmaginnovate.controller.response;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.example.kaszmaginnovate.model.User;
-import org.example.kaszmaginnovate.repository.UserRepository;
 import org.example.kaszmaginnovate.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

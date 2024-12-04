@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 // Publikus végpontok
                                 .requestMatchers("/", "/login", "/register", "/contact", "/css/**", "/js/**", "/img/**").permitAll()
                                 // API végpontok Basic Auth védelmével
-                                .requestMatchers("/contact/send-message", "/api/**").authenticated()
+                                .requestMatchers("/contact/send-message").permitAll()
                                 .anyRequest().authenticated()
                 )
                 // Form alapú bejelentkezés a webes felülethez

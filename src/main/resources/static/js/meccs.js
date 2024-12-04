@@ -6,6 +6,52 @@ document.getElementById('searchInput').addEventListener('input', function() {
         row.style.display = text.includes(filter) ? '' : 'none';
     });
 });
+//uj meccs felvétele
+// Új meccs létrehozása
+$('#newModalForm').on('submit', function(e) {
+    e.preventDefault();
+
+    var json = JSON.stringify({
+        datum: $('#new_datum').val(),
+        kezdes: $('#new_kezdes').val(),
+        belepo: $('#new_belepo').val(),
+        tipus: $('#new_tipus').val()
+    });
+
+    jQuery.ajax({
+        url: '/football/meccs',
+        type: 'POST',
+        contentType: 'application/json',
+        data: json,
+        success: function(response) {
+            showNotification("Meccs sikeresen létrehozva!");
+            window.location.href = "/meccsek";
+        },
+        error: function(xhr, status, error) {
+            showNotification("Hiba történt a létrehozás során: " + error, true);
+            console.error(xhr.responseText);
+        }
+    });
+});
+/*jQuery.ajax({
+    url: '/football/meccs/',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({
+        datum: $('#new_datum').val(),
+        kezdes: $('#new_kezdes').val(),
+        belepo: $('#new_belepo').val(),
+        tipus: $('#new_tipus').val()
+    }),
+    success: function(response) {
+        showNotification("Meccs sikeresen létrehozva!");
+        window.location.href = "/meccsek"; // Frissítés az új adatok betöltéséhez
+    },
+    error: function(xhr, status, error) {
+        showNotification("Hiba történt a létrehozás során: " + error, true);
+        console.error(xhr.responseText);
+    }
+});*/
 // Meccs Modal form adat kitöltése
 document.getElementById('updateModal').addEventListener('show.bs.modal', function (event) {
     var button = event.relatedTarget; // A modal-t megnyitó gomb

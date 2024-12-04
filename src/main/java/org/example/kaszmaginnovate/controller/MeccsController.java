@@ -3,15 +3,12 @@ package org.example.kaszmaginnovate.controller;
 import org.example.kaszmaginnovate.config.AuthConfiguration;
 import org.example.kaszmaginnovate.controller.response.MeccsResponse;
 import org.example.kaszmaginnovate.model.Meccs;
-import org.example.kaszmaginnovate.repository.BelepesRepository;
-import org.example.kaszmaginnovate.repository.MeccsRepository;
-import org.example.kaszmaginnovate.service.BelepesService;
 import org.example.kaszmaginnovate.service.MeccsService;
-import org.springframework.http.MediaType;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,14 +41,13 @@ public class MeccsController {
         if (!auth.isAdmin()) {
             return ResponseEntity.status(403).build(); // Forbidden
         }
-        if (meccs.getId() == null) {
-            return ResponseEntity.status(404).build();
-        }
         Optional<Meccs> meccsOptional = meccsService.save(meccs);
-        return ResponseUtil.toResponseEntity(meccsOptional);
+        return meccsOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(500).build());
     }
 
-    @PutMapping(value = "/football/meccs/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+
+    @PutMapping(value = "/football/meccs/{id}")
     public ResponseEntity<MeccsResponse> updateMeccs(@PathVariable Long id, @RequestBody Meccs meccs) {
         if (!auth.isAdmin()) {
             return ResponseEntity.status(403).build(); // Forbidden

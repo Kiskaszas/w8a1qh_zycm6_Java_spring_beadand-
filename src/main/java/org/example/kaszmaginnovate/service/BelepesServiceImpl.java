@@ -8,7 +8,6 @@ import org.example.kaszmaginnovate.repository.BelepesRepository;
 import org.example.kaszmaginnovate.repository.MeccsRepository;
 import org.example.kaszmaginnovate.repository.NezoRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

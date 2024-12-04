@@ -36,6 +36,9 @@
 
 <main class="container mt-4">
     <div class="mb-3">
+        <div sec:authorize="hasRole('ADMIN')">
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#newModal" th:data-id="${meccs.id}">+ Új meccs</button>
+        </div>
         <label for="searchInput"></label>
         <input type="text" id="searchInput" class="form-control" placeholder="Meccsek keresése...">
     </div>
@@ -84,6 +87,42 @@
         </ul>
     </nav>
 </main>
+
+<!-- Új meccs Modal-->
+<div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="newModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newModalLabel">Meccs létrehozása</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newModalForm" method="post">
+                    <div class="mb-3">
+                        <label for="new_datum" class="form-label">Dátum</label>
+                        <input type="date" class="form-control" id="new_datum" name="datum" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_kezdes" class="form-label">Kezdés</label>
+                        <input type="time" class="form-control" id="new_kezdes" name="kezdes" th:value="${meccs.getKezdes()}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_belepo" class="form-label">Belépő</label>
+                        <input type="number" class="form-control" id="new_belepo" name="belepo" th:value="${meccs.getBelepo()}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_tipus" class="form-label">Típus</label>
+                        <input type="text" class="form-control" id="new_tipus" name="tipus" th:value="${meccs.getTipus()}" required>
+                    </div>
+                    <button type="submit" class="btn btn-success" id="newBtn">Létrehozás</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Módosítás Modal-->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
